@@ -1,16 +1,21 @@
 package nelseric;
 
+import java.util.Scanner;
+
 public class Main {
-	
 
-	
-	
-	
 	public static void main(String[] args) {
-		for (int i = 1; i <= 40; i++) {
-			Hive.coordinates(i);
+		Scanner inScanner = new Scanner(System.in);
+		while(true){
+			System.out.print(">");
+			int a = inScanner.nextInt();
+			int b = inScanner.nextInt();
+			if(a <= 0 || b <= 0){
+				break;
+			}
+			Hive.distance(a, b);
 		}
-
+		
 	}
 
 }
