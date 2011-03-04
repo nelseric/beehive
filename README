@@ -22,3 +22,6 @@ http://www.karrels.org/Ed/ACM/99/prob_a.html
 \__/  \__/  \__/66\__/  \__/  \__/
    \__/  \__/  \__/  \__/  \__/
       \__/  \__/  \__/  \__/
+
+abs(x1 - x2) + abs(y1-y2)
+max(abs(x1 - x2), abs(y1 - y2))

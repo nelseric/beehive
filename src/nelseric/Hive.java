@@ -45,11 +45,11 @@ public class Hive {
 		double angle = 360 - ((double) (cell - subtractor) / (double) curRingSize) * 360;
 		double radians = Math.toRadians(angle);
 
-		// System.out
-		// .println(cell + ": r: " + curR + ", ring: " + curRingSize
-		// + ", sub: " + subtractor + ", angle: " + angle + " ("
-		// + (Math.cos(radians) * curR) + ","
-		// + (Math.sin(radians) * curR));
+		System.out
+				.println(cell + ": r: " + curR + ", ring: " + curRingSize
+						+ ", sub: " + subtractor + ", angle: " + angle + " ("
+						+ (Math.cos(radians) * curR) + ","
+						+ (Math.sin(radians) * curR));
 
 		return new Point((int) (Math.cos(radians) * curR),
 				(int) (Math.sin(radians) * curR));
@@ -61,40 +61,40 @@ public class Hive {
 	 */
 
 	private static enum Direction {
-		E, NE, NW, W, SW, SE;
+		SE, NE, N, NW, SW, S;
 		public Direction getNext() {
 			switch (this) {
-			case E:
-				return SE;
 			case SE:
+				return S;
+			case S:
 				return SW;
 			case SW:
-				return W;
-			case W:
 				return NW;
 			case NW:
+				return N;
+			case N:
 				return NE;
 			case NE:
-				return E;
+				return SE;
 			default:
-				return E;
+				return N;
 			}
 		}
 
 		public Point mod() {
 			switch (this) {
-			case E:
+			case N:
+				return new Point(0, 1);
+			case S:
+				return new Point(0, -1);
+			case NW:
+				return new Point(-1, 1);
+			case NE:
 				return new Point(1, 0);
 			case SE:
 				return new Point(1, -1);
 			case SW:
-				return new Point(0, -1);
-			case W:
 				return new Point(-1, 0);
-			case NW:
-				return new Point(-1, 1);
-			case NE:
-				return new Point(0, 1);
 			default:
 				return new Point();
 			}
@@ -105,18 +105,18 @@ public class Hive {
 		if (cell == 1)
 			return new Point(0, 0);
 
-		Direction nextMove = Direction.W;
+		Direction nextMove = Direction.NW;
 
 		int movesPerFace = 1;
 		int movesOnFace = 0;
-		int x = 1;
+		int x = 0;
 		int y = -1;
 		int curCell = 2;
 		while (curCell < cell) {
 			// next ring
-			if (nextMove == Direction.SE && movesOnFace == movesPerFace) {
-				x += Direction.SE.mod().x;
-				y += Direction.SE.mod().y;
+			if (nextMove == Direction.S && movesOnFace == movesPerFace) {
+				x += Direction.S.mod().x;
+				y += Direction.S.mod().y;
 				curCell++;
 				movesPerFace++;
 				movesOnFace = 1;
@@ -140,12 +140,14 @@ public class Hive {
 	public static int distance(int cellA, int cellB) {
 		Point a = coordinatesLinear(cellA);
 		Point b = coordinatesLinear(cellB);
-		System.out.println(cellA + ": (" + a.x + "," + a.y + ")");
-		System.out.println(cellB + ": (" + b.x + "," + b.y + ")");
-		System.out.println(Math.max(Math.abs(b.y - b.x), Math.abs(a.y - b.y)));
-		System.out.println(Math.abs(a.x - b.x) + Math.abs(a.y - b.y));
-		if (cellA == 1 || cellB == 1) {
-			return Math.max(Math.abs(b.y - b.x), Math.abs(a.y - b.y));
+		// System.out.println(cellA + ": (" + a.x + "," + a.y + ")");
+		// System.out.println(cellB + ": (" + b.x + "," + b.y + ")");
+		// System.out.println("max: "
+		// + (Math.max(Math.abs(a.x - b.x), Math.abs(a.y - b.y))));
+		// System.out.println("reg: "
+		// + (Math.abs(a.x - b.x) + Math.abs(a.y - b.y)));
+		if ((a.y >= b.y && a.x <= b.x || b.y >= a.y && b.x <= a.x)) {
+			return Math.max(Math.abs(a.x - b.x), Math.abs(a.y - b.y));
 		} else {
 			return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
 		}
